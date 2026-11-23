@@ -8,6 +8,10 @@ function matchesKey(line: string, indent: string, key: string) {
   );
 }
 
+function isBlankOrComment(line: string) {
+  return /^\s*(#|$)/.test(line);
+}
+
 export class YamlCatalogPeeker {
   private lines: string[] = [];
   private sections: Record<string, number> = {};
@@ -44,6 +48,7 @@ export class YamlCatalogPeeker {
     if (isDefault) {
       for (let i = startLine + 1; i < this.lines.length; i++) {
         const line = this.lines[i];
+        if (isBlankOrComment(line)) continue;
         if (!line.startsWith('  ')) break;
         if (matchesKey(line, '  ', symbol)) {
           return { line: i + 1, col: line.indexOf(symbol) + 1 };
@@ -53,6 +58,7 @@ export class YamlCatalogPeeker {
       let inTargetCatalog = false;
       for (let i = startLine + 1; i < this.lines.length; i++) {
         const line = this.lines[i];
+        if (isBlankOrComment(line)) continue;
         if (!line.startsWith('  ')) break;
 
         if (matchesKey(line, '  ', parentSymbol)) {
@@ -78,6 +84,7 @@ export class YamlCatalogPeeker {
 
     for (let i = startLine + 1; i < this.lines.length; i++) {
       const line = this.lines[i];
+      if (isBlankOrComment(line)) continue;
       if (!line.startsWith('  ')) break;
       if (matchesKey(line, '  ', selector)) return { line: i + 1, col: line.indexOf(selector) + 1 };
     }

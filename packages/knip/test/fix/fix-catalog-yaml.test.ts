@@ -25,10 +25,12 @@ test('Fix catalog entries (pnpm-workspace.yaml)', async () => {
 catalog:
   react: ^18.0.0
 
+
 catalogs:
   frontend:
     vue: ^3.0.0
     "@nu/xt": ^3.0.0
+
   backend:
     '@ex/press': ^4.18.0
   tools: { prettier: ^3.0.0 }
