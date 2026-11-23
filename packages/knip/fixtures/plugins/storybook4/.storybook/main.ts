@@ -4,6 +4,7 @@ export default {
   stories: [
     '../src/**/*.mdx',
     '../src/**/*.stories.@(js|jsx|ts|tsx)',
+    '../layouts',
     resolve(import.meta.dirname, '../screens/**/*.stories.tsx'),
     { directory: resolve(import.meta.dirname, '../widgets') },
   ],

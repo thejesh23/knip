@@ -13,10 +13,11 @@ test('Follow imports in Storybook MDX docs', async () => {
 
   assert(!issues.exports['src/api-link.ts']?.['getApiLink']);
   assert(!('src/api-link.ts' in issues.files));
+  assert(!('layouts/page.stories.tsx' in issues.files));
 
   assert.deepEqual(counters, {
     ...baseCounters,
-    processed: 5,
-    total: 5,
+    processed: 6,
+    total: 6,
   });
 });

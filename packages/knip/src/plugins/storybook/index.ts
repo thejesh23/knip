@@ -1,5 +1,6 @@
 import MDX from '../../compilers/mdx.ts';
 import type { IsPluginEnabled, Plugin, RegisterCompilers, ResolveConfig, ResolveFromAST } from '../../types/config.ts';
+import { isDirectory } from '../../util/fs.ts';
 import { type Input, toConfig, toModule, toDependency, toEntry } from '../../util/input.ts';
 import { join, toAbsolute } from '../../util/path.ts';
 import { hasDependency } from '../../util/plugin.ts';
@@ -35,7 +36,10 @@ const resolveConfig: ResolveConfig<StorybookConfig> = async (localConfig, option
   const { cwd, configFileDir } = options;
   const strs = typeof localConfig?.stories === 'function' ? await localConfig.stories(stories) : localConfig?.stories;
   const storyPatterns = strs?.map(pattern => {
-    if (typeof pattern === 'string') return toAbsolute(pattern, configFileDir);
+    if (typeof pattern === 'string') {
+      const absolute = toAbsolute(pattern, configFileDir);
+      return isDirectory(absolute) ? join(absolute, stories[0]) : absolute;
+    }
     return join(toAbsolute(pattern.directory, configFileDir), pattern.files ?? stories[0]);
   });
   const patterns = [
